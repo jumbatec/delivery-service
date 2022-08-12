@@ -1,6 +1,6 @@
-package jumba.delivery.service.sales_order.repository;
+package jumba.delivery.service.salesorder.repository;
 
-import jumba.delivery.service.sales_order.domain.SalesOrderEntity;
+import jumba.delivery.service.salesorder.domain.SalesOrderEntity;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 
 

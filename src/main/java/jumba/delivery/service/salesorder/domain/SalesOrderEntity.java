@@ -1,7 +1,7 @@
-package jumba.delivery.service.sales_order.domain;
+package jumba.delivery.service.salesorder.domain;
 
 import jumba.delivery.service.generic.entity.LifeCycleEntity;
-import jumba.delivery.service.sales_order.domain.enums.SalesOrderState;
+import jumba.delivery.service.salesorder.domain.enums.SalesOrderState;
 import lombok.*;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;

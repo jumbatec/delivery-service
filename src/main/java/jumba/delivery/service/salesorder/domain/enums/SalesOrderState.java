@@ -1,4 +1,4 @@
-package jumba.delivery.service.sales_order.domain.enums;
+package jumba.delivery.service.salesorder.domain.enums;
 
 public enum SalesOrderState {
     PENDING,

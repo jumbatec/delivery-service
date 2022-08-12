@@ -12,16 +12,16 @@ import java.io.Serializable;
  */
 public interface AbstractService<T, ID extends Serializable> {
 
-Mono<T> create(UserContext userContext,T entity);
+Mono<T> create(T entity);
 
-Mono<T> update(UserContext userContext, T entity);
+Mono<T> update( T entity);
 
-void inactivate(UserContext userContext,T entity);
+void inactivate(T entity);
 
-void activate(UserContext userContext,T enity);
+void activate(T entity);
 
-void delete(UserContext userContext,T enity);
+void delete(T entity);
 
-void banish(UserContext userContext,T enity);
+void banish(T entity);
 
 }

@@ -3,7 +3,6 @@ package jumba.delivery.service.generic.service;
 import jumba.delivery.service.generic.dao.AbstractBaseRepository;
 import jumba.delivery.service.generic.entity.LifeCyCleState;
 import jumba.delivery.service.generic.entity.LifeCycleEntity;
-import jumba.delivery.service.security.UserContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -28,25 +27,24 @@ public class AbstractServiceImpl<T extends LifeCycleEntity<T>, ID extends Serial
 	private AbstractBaseRepository<T, ID> repository;
 
 	@Override
-	public Mono<T> create(UserContext userContext, T entity) {
-		entity.setCreatedBy(userContext.getId());
-		entity.setActivatedBy(userContext.getId());
+	public Mono<T> create(T entity) {
+		entity.setCreatedBy(null);
+		entity.setActivatedBy(null);
 		entity.setActive(LifeCyCleState.ACTIVE.isActive());
 		entity.setState(LifeCyCleState.ACTIVE.getState());
-		entity.setSucursalId(userContext.getSucursalId());
 		return repository.save(entity);
 	}
 
 	@Override
-	public  Mono<T>  update(UserContext userContext, T entity) {
-		entity.setUpdatedBy(userContext.getId());
+	public  Mono<T>  update( T entity) {
+		entity.setUpdatedBy(null);
 		entity.setUpdatedAt(LocalDateTime.now());
 		return repository.save(entity);
 	}
 
 	@Override
-	public void inactivate(UserContext userContext, T entity) {
-		entity.setActivatedBy(userContext.getId());
+	public void inactivate(T entity) {
+		entity.setActivatedBy(null);
 		entity.setActive(LifeCyCleState.INACTIVE.isActive());
 		entity.setState(LifeCyCleState.INACTIVE.getState());
 		repository.save(entity);
@@ -54,8 +52,7 @@ public class AbstractServiceImpl<T extends LifeCycleEntity<T>, ID extends Serial
 	}
 
 	@Override
-	public void activate(UserContext userContext, T entity) {
-		entity.setActivatedBy(userContext.getId());
+	public void activate( T entity) {
 		entity.setActive(LifeCyCleState.ACTIVE.isActive());
 		entity.setState(LifeCyCleState.ACTIVE.getState());
 		repository.save(entity);
@@ -63,8 +60,7 @@ public class AbstractServiceImpl<T extends LifeCycleEntity<T>, ID extends Serial
 	}
 
 	@Override
-	public void delete(UserContext userContext, T entity) {
-		entity.setActivatedBy(userContext.getId());
+	public void delete( T entity) {
 		entity.setActive(LifeCyCleState.DELETED.isActive());
 		entity.setState(LifeCyCleState.DELETED.getState());
 		repository.save(entity);
@@ -72,8 +68,7 @@ public class AbstractServiceImpl<T extends LifeCycleEntity<T>, ID extends Serial
 	}
 
 	@Override
-	public void banish(UserContext userContext, T entity) {
-		entity.setActivatedBy(userContext.getId());
+	public void banish( T entity) {
 		entity.setActive(LifeCyCleState.BANNED.isActive());
 		entity.setState(LifeCyCleState.BANNED.getState());
 		repository.save(entity);
