@@ -24,4 +24,6 @@ public class DeliveryTimeDto {
     private UUID marketId;
 
     private String marketName;
+
+    boolean available;
 }

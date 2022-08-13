@@ -32,7 +32,7 @@ public class DeliveryTimeResource {
     }
 
     @GetMapping("/available-slots")
-    public Flux<DeliveryTimeDto> findAvailableTimeSlots(final UUID marketId, final  PageDto pageDto) {
-        return deliveryTimeService.findDeliveryTimesByMarketId(marketId, pageDto);
+    public Flux<DeliveryTimeDto> findAvailableTimeSlots(final UUID marketId, final  PageDto pageDto,final Integer daysInAdvance) {
+        return deliveryTimeService.findDeliveryTimesByMarketId(marketId, pageDto,daysInAdvance);
     }
 }

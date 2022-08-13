@@ -10,7 +10,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @Getter
 @Setter
-public class DeliveryConfigs {
+public class DeliveryConfig {
 
     private LocalTime startTime;
 
@@ -19,8 +19,6 @@ public class DeliveryConfigs {
     private LocalTime dispatchTime;
 
     private LocalTime leadTime;
-
-    private DayConfigType dayConfigType;
 
 
 }

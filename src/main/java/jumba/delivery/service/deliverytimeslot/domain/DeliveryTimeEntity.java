@@ -41,5 +41,5 @@ public class DeliveryTimeEntity extends LifeCycleEntity<UUID> {
     private UUID marketId;
 
     @Column(nullable = false)
-    private String marketName;
+    boolean available;
 }

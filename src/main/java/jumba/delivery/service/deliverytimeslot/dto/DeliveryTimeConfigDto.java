@@ -1,6 +1,6 @@
 package jumba.delivery.service.deliverytimeslot.dto;
 
-import jumba.delivery.service.deliverytimeslot.domain.DeliveryConfigs;
+import jumba.delivery.service.deliverytimeslot.domain.DeliveryConfig;
 import lombok.Data;
 
 
@@ -17,5 +17,5 @@ public class DeliveryTimeConfigDto {
     @Column(nullable = false)
     private String marketName;
 
-    List<DeliveryConfigs> deliveryConfigs;
+    List<DeliveryConfig> deliveryConfigs;
 }
