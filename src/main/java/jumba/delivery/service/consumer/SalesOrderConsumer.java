@@ -17,7 +17,7 @@ public class SalesOrderConsumer {
   private final SalesOrderService salesOrderService;
 
 
-  @KafkaListener(topics = "${io.confluent.developer.config.topics.orders.name}", groupId = "${consumer.delivery-service.consumer-group}")
+  @KafkaListener(topics = "${kafka.sales-order.topic}", groupId = "${kafka.sales-order.topic.consumer-group}")
   public void handleMessage(String saleOrderString)  {
     log.debug("Received Sales Order from Kafka ===== : {}", saleOrderString);
     try{

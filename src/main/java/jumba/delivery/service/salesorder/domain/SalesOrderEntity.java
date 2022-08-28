@@ -17,6 +17,8 @@ import java.util.UUID;
 @TypeDef(name = "json", typeClass = JsonType.class)
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name="sales_order")
 @Getter
 @Setter

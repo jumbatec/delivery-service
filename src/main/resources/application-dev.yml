@@ -1,1 +1,14 @@
 
+kafka:
+  topic:
+    sales-order:
+        topic: sales-order-queue
+        key: sales-order-service
+  delivery-note:
+      topic: delivery-note-queue
+bootstrap:
+  servers: localhost:29092
+key:
+  serializer: 3332-4455g-55444
+value:
+  serializer: 34kkk4n44-n444
