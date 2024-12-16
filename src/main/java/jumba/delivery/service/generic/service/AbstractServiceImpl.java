@@ -3,9 +3,7 @@ package jumba.delivery.service.generic.service;
 import jumba.delivery.service.generic.dao.AbstractBaseRepository;
 import jumba.delivery.service.generic.entity.LifeCyCleState;
 import jumba.delivery.service.generic.entity.LifeCycleEntity;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
+import jumba.delivery.service.security.UserContext;
 
 import javax.transaction.Transactional;
 import java.io.Serializable;
@@ -18,61 +16,72 @@ import java.time.LocalDateTime;
  *         Implementation of the generic repository
  *         </p>
  */
-@Service
 @Transactional
-public class AbstractServiceImpl<T extends LifeCycleEntity<T>, ID extends Serializable>
+public abstract class AbstractServiceImpl<T extends LifeCycleEntity<ID>, ID extends Serializable>
 		implements AbstractService<T, ID> {
 
-	@Autowired
-	private AbstractBaseRepository<T, ID> repository;
+	private final AbstractBaseRepository<T, ID> repository;
+
+	protected AbstractServiceImpl(AbstractBaseRepository<T, ID> repository) {
+		this.repository = repository; // Injected by the subclass
+	}
 
 	@Override
-	public Mono<T> create(T entity) {
-		entity.setCreatedBy(null);
-		entity.setActivatedBy(null);
-		entity.setActive(LifeCyCleState.ACTIVE.isActive());
-		entity.setState(LifeCyCleState.ACTIVE.getState());
+	public T create(UserContext userContext, T entity) {
+		prepareEntityForCreate(userContext, entity);
 		return repository.save(entity);
 	}
 
 	@Override
-	public  Mono<T>  update( T entity) {
-		entity.setUpdatedBy(null);
+	public T update(UserContext userContext, T entity) {
+		prepareEntityForUpdate(userContext, entity);
+		return repository.save(entity);
+	}
+
+	@Override
+	public void inativate(UserContext userContext, T entity) {
+		prepareEntityForLifecycleChange(userContext, entity, LifeCyCleState.INACTIVE);
+		repository.save(entity);
+	}
+
+	@Override
+	public void activate(UserContext userContext, T entity) {
+		prepareEntityForLifecycleChange(userContext, entity, LifeCyCleState.ACTIVE);
+		repository.save(entity);
+	}
+
+	@Override
+	public void delete(UserContext userContext, T entity) {
+		prepareEntityForLifecycleChange(userContext, entity, LifeCyCleState.DELETED);
+		repository.save(entity);
+	}
+
+	@Override
+	public void banish(UserContext userContext, T entity) {
+		prepareEntityForLifecycleChange(userContext, entity, LifeCyCleState.BANNED);
+		repository.save(entity);
+	}
+
+	// Common method for setting create-specific attributes
+	public void prepareEntityForCreate(UserContext userContext, T entity) {
+		entity.setCreatedBy(userContext.getId());
+		entity.setActivatedBy(userContext.getId());
+		entity.setActive(LifeCyCleState.ACTIVE.isActive());
+		entity.setState(LifeCyCleState.ACTIVE.getState());
+		entity.setSucursalId(userContext.getSucursalId());
+	}
+
+	// Common method for setting update-specific attributes
+	protected void prepareEntityForUpdate(UserContext userContext, T entity) {
+		entity.setUpdatedBy(userContext.getId());
 		entity.setUpdatedAt(LocalDateTime.now());
-		return repository.save(entity);
 	}
 
-	@Override
-	public void inactivate(T entity) {
-		entity.setActivatedBy(null);
-		entity.setActive(LifeCyCleState.INACTIVE.isActive());
-		entity.setState(LifeCyCleState.INACTIVE.getState());
-		repository.save(entity);
-
+	// Common method for lifecycle state changes (activate, inactivate, delete, etc.)
+	protected void prepareEntityForLifecycleChange(UserContext userContext, T entity, LifeCyCleState state) {
+		entity.setActivatedBy(userContext.getId());
+		entity.setActive(state.isActive());
+		entity.setState(state.getState());
 	}
-
-	@Override
-	public void activate( T entity) {
-		entity.setActive(LifeCyCleState.ACTIVE.isActive());
-		entity.setState(LifeCyCleState.ACTIVE.getState());
-		repository.save(entity);
-
-	}
-
-	@Override
-	public void delete( T entity) {
-		entity.setActive(LifeCyCleState.DELETED.isActive());
-		entity.setState(LifeCyCleState.DELETED.getState());
-		repository.save(entity);
-
-	}
-
-	@Override
-	public void banish( T entity) {
-		entity.setActive(LifeCyCleState.BANNED.isActive());
-		entity.setState(LifeCyCleState.BANNED.getState());
-		repository.save(entity);
-
-	}
-
 }
+

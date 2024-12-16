@@ -1,10 +1,13 @@
 package jumba.delivery.service.salesorder.resource;
 
 
+import jumba.delivery.service.exceptions.EntityNotFoundException;
 import jumba.delivery.service.salesorder.domain.SalesOrderEntity;
 import jumba.delivery.service.salesorder.dto.SalesOrderDto;
 import jumba.delivery.service.salesorder.service.SalesOrderService;
+import jumba.delivery.service.security.UserContext;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -27,12 +30,12 @@ public class SalesOrderResource {
     }
 
     @PutMapping
-    public void updateSalesOrder(@RequestBody SalesOrderDto salesOrderDto) {
-        salesOrderService.updateSalesOrder(salesOrderDto);
+    public void updateSalesOrder(final UserContext userContext, @RequestBody SalesOrderDto salesOrderDto) {
+        salesOrderService.updateSalesOrder(userContext,salesOrderDto);
     }
 
     @GetMapping("/{id}")
-    public Mono<SalesOrderEntity> findDeliveryNoteById(final UUID id) {
-        return salesOrderService.findSalesOrderById(id);
+    public ResponseEntity<SalesOrderEntity> findDeliveryNoteById(final UUID id) throws EntityNotFoundException {
+        return ResponseEntity.ok(salesOrderService.findSalesOrderById(id));
     }
 }

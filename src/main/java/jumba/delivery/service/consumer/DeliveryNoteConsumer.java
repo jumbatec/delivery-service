@@ -2,6 +2,7 @@ package jumba.delivery.service.consumer;
 
 import jumba.delivery.service.deliverynote.service.DeliveryNoteService;
 import jumba.delivery.service.exceptions.InternalServerErrorException;
+import jumba.delivery.service.security.UserContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONException;
@@ -19,7 +20,7 @@ public class DeliveryNoteConsumer {
     public void handleMessage(String deliveryNoteString) {
         log.debug("Received Delivery Note from Kafka ===== : {}", deliveryNoteString);
         try {
-            deliveryNoteService.createDeliveryNote(deliveryNoteString);
+            deliveryNoteService.createDeliveryNote(UserContext.getDefaulUserContext(),deliveryNoteString);
         } catch (JSONException | InternalServerErrorException ex) {
             log.error("Could not decode Delivery Note");
         }

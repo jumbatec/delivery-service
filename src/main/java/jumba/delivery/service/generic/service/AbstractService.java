@@ -1,7 +1,7 @@
 package jumba.delivery.service.generic.service;
 
+
 import jumba.delivery.service.security.UserContext;
-import reactor.core.publisher.Mono;
 
 import java.io.Serializable;
 
@@ -12,16 +12,16 @@ import java.io.Serializable;
  */
 public interface AbstractService<T, ID extends Serializable> {
 
-Mono<T> create(T entity);
+T create(UserContext userContext, T entity);
 
-Mono<T> update( T entity);
+T update(UserContext userContext,T entity);
 
-void inactivate(T entity);
+void inativate(UserContext userContext,T entity);
 
-void activate(T entity);
+void activate(UserContext userContext,T entity);
 
-void delete(T entity);
+void delete(UserContext userContext,T entity);
 
-void banish(T entity);
+void banish(UserContext userContext,T entity);
 
 }

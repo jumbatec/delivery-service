@@ -2,22 +2,18 @@ package jumba.delivery.service.generic.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @MappedSuperclass
 @NoArgsConstructor
 @Data
-public abstract class LifeCycleEntity<T>  implements ILifeCycleEntity<T>, Serializable {
-
+public abstract class LifeCycleEntity<T>  implements ILifeCycleEntity<T> {
+	
+	@Column(name="id",nullable=false)
 	@Id
-	@GeneratedValue(generator = "uuid2")
-	@GenericGenerator(name = "uuid2", strategy = "uuid2")
-	@Column(columnDefinition = "UUID")
 	private T id;
 
 	@Column(name="created_by",nullable=false)
@@ -44,11 +40,8 @@ public abstract class LifeCycleEntity<T>  implements ILifeCycleEntity<T>, Serial
 	@Column(name="activated_at",nullable=false)
 	private LocalDateTime activatedAt;
 	
-	@Column(name="market_id")
-	private Long marketId;
-
-	@Column(name="territory_id")
-	private Long territoryId;
+	@Column(name="sucursal_id")
+	private Long sucursalId;
 
 	@PrePersist
 	void createdAt() {
