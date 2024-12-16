@@ -13,10 +13,12 @@ import javax.persistence.Table;
 import java.util.List;
 import java.util.UUID;
 
+@Builder
 @Entity
 @TypeDef(name = "json", typeClass = JsonType.class)
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name="delivery_time_config")
 @Getter
 @Setter
@@ -32,6 +34,5 @@ public class DeliveryTimeConfigEntity extends LifeCycleEntity<UUID> {
     
     @Type(type = "json")
     @Column(columnDefinition = "jsonb")
-    @Builder.Default
     List<DeliveryConfig> deliveryConfigs;
 }
