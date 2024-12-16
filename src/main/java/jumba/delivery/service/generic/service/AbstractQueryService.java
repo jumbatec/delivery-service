@@ -1,25 +1,24 @@
 package jumba.delivery.service.generic.service;
 
+
 import jumba.delivery.service.generic.entity.LifeCyCleState;
 import jumba.delivery.service.generic.entity.LifeCycleEntity;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import java.io.Serializable;
-import java.util.UUID;
-
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Judiao Mbaua
  *
  */
-public interface AbstractQueryService<T extends LifeCycleEntity<T>, ID extends UUID> {
+public interface AbstractQueryService<T extends LifeCycleEntity<ID>, ID extends Serializable> {
 
-Mono<T> findById(ID id);
+Optional<T> findById(ID id);
 
-Flux<T> findAll();
+List<T> findAll();
 
-Flux<T> findByActiveAndState(LifeCyCleState lifeCyCleState);
+List<T> findByActiveAndState(LifeCyCleState lifeCyCleState);
 
 
 }

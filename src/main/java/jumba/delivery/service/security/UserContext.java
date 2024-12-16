@@ -1,14 +1,14 @@
 package jumba.delivery.service.security;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class UserContext {
 
 private String userName;
@@ -22,5 +22,9 @@ private UUID id;
 private String device;
 
 private Long sucursalId;
+
+public static UserContext getDefaulUserContext(){
+    return UserContext.builder().userName("admin").build();
+}
 
 }

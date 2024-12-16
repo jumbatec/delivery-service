@@ -1,38 +1,39 @@
 package jumba.delivery.service.generic.service;
 
+
+
 import jumba.delivery.service.generic.dao.AbstractBaseRepository;
 import jumba.delivery.service.generic.entity.LifeCyCleState;
 import jumba.delivery.service.generic.entity.LifeCycleEntity;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 import javax.transaction.Transactional;
 import java.io.Serializable;
-import java.util.UUID;
+import java.util.List;
+import java.util.Optional;
 
-@Service
 @Transactional
-public class AbstractQueryServiceImpl<T extends LifeCycleEntity<T>, ID extends UUID>
+public class AbstractQueryServiceImpl<T extends LifeCycleEntity<ID>, ID extends Serializable>
 		implements AbstractQueryService<T, ID> {
-	
-	@Autowired
-	private AbstractBaseRepository<T, ID> repository;
-	
-	@Override
-	public Mono<T> findById(ID id) {
+
+	private final AbstractBaseRepository<T, ID> repository;
+
+    public AbstractQueryServiceImpl(AbstractBaseRepository<T, ID> repository) {
+        this.repository = repository;
+    }
+
+    @Override
+	public Optional<T> findById(ID id) {
 		
 		return repository.findById(id);
 	}
 
 	@Override
-	public Flux<T> findAll() {
-		return repository.findAll();
+	public List<T> findAll() {
+		return (List<T>) repository.findAll();
 	}
 
 	@Override
-	public Flux<T> findByActiveAndState(LifeCyCleState lifeCyCleState) {
+	public List<T> findByActiveAndState(LifeCyCleState lifeCyCleState) {
 	
 		return repository.findByActiveAndState(lifeCyCleState.isActive(),lifeCyCleState.getState());
 	}
